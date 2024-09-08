@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor</title>
+</head>
+<body class="interactable" style="display: inherit;">
+  <div id="trailer" data-type="">
+      <i id="trailer-icon" class="gg-arrow-top-right"></i>
+  </div>
+  <div class="interactable" style="height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #000;">
+      <h1 style="color: aquamarine; margin: 0;">Hello thea this is cursor follow</h1>
+      <p style="color: bisque; margin: 0;">it use js and html and css</p>
+      <button style="color: red; width: 200px; height: 50px; border: 3px solid red; border-radius: 15%; margin-top: 20px;">send</button>
+  </div>
+      <style>
+        .interactable {
+  cursor: pointer;
+  position: relative;
+  mix-blend-mode: difference;
+  color: #000;
+  text-decoration: none;
+}
+#trailer:not([data-type='']) > #trailer-icon {
+  opacity: 1;
+}
+
+#trailer-icon {
+  scale: 0.5;
+  line-height: 4;
+  opacity: 0;
+  transition: opacity 400ms ease;
+  -webkit-transition: opacity 400ms ease;
+}
+body:hover > #trailer {
+  opacity: 1;
+}
+#trailer {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms ease;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gg-arrow-top-right {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid;
+  transform: scale(var(--ggs, 1));
+  border-right: 2px solid;
+}
+
+      </style>
+      <script>
+        const trailer = document.querySelector('#trailer');
+
+const animateTrailer = (e, interacting) => {
+const x = e.clientX - trailer.offsetWidth / 2,
+y = e.clientY - trailer.offsetHeight / 2;
+
+const keyframes = {
+transform: `translate(${x}px,${y}px) scale(${
+interacting ? 4 : 1
+} )`,
+};
+
+trailer.animate(keyframes, {
+duration: 800,
+fill: 'forwards',
+});
+};
+
+const getTrailerClass = (type) => {
+switch (type) {
+case 'link':
+return 'gg-arrow-top-right';
+case 'send':
+return 'gg-mail';
+default:
+return '';
+}
+};
+
+window.onmousemove = (e) => {
+const interactable = e.target.closest('.interactable'),
+interacting = interactable != null;
+const trailerIcon =
+document.querySelector('#trailer-icon');
+
+trailer.dataset.type = interacting
+? interactable.dataset.type
+: '';
+
+if (interacting) {
+trailerIcon.className = getTrailerClass(
+interactable.dataset.type,
+);
+}
+
+animateTrailer(e, interacting);
+};
+
+    </script>
+</body>
+</html>
